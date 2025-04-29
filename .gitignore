@@ -1,2 +1,9 @@
-/models
-/dataset
+.venv/
+
+# Ignore everything in dataset folder
+dataset/*
+models/*
+
+# Except .gitkeep
+!dataset/.gitkeep
+!models/.gitkeep
