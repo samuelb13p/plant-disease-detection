@@ -49,7 +49,7 @@ After the training finishes, it will create the following files inside the `mode
 
 ## 🧪 Predicting Leaf Diseases
 
-Once your model is trained, you can test it using the `run.py` script.
+Once your model is trained, you can test it using the `predict_test_images.py` script.
 
 ### Steps to test:
 
@@ -58,7 +58,7 @@ Once your model is trained, you can test it using the `run.py` script.
 2. From the **main project directory**, run:
 
    ```bash
-   python run.py
+   python predict_test_images.py
    ```
 
 The script will analyze each image in the `testData/` folder and print the result in the console.
@@ -82,7 +82,7 @@ plant-disease-detection/
 ├── scripts/
 │   └── train_model.py     # Training script
 ├── testData/              # Images to classify
-├── run.py                 # Prediction script
+├── predict_test_images.py                 # Prediction script
 └── README.md              # This file
 ```
 
@@ -91,7 +91,7 @@ plant-disease-detection/
 ### 👥 Authors
 
 - **Samuel Buendía** – [GitHub](https://github.com/samuelbuendia) · [Portfolio](https://samuelbuendia.com)
-- **Co-Author Name** – [GitHub](https://github.com/username) · [LinkedIn](https://linkedin.com/in/username)
+- **Qasam Hussain** – [GitHub](https://github.com/username) · [LinkedIn](https://linkedin.com/in/qasam-hussain-53a54912b) 
 
 ---
 
