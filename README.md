@@ -115,7 +115,7 @@ plant-disease-detection/
 
 - **Samuel Buendía** – [GitHub](https://github.com/samuelbuendia) · [LinkedIn](https://www.linkedin.com/in/samuelbuendia/) · [Portfolio](https://samuelbuendia.com)
 - **Qasam Hussain** – [GitHub](https://github.com/Qasimhussain5753) · [LinkedIn](https://linkedin.com/in/qasam-hussain-53a54912b)
-
+- **Vaibhav Sharma**
 ---
 
 ## 📃 License
