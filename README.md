@@ -1,4 +1,3 @@
-
 # 🌿 Plant Disease Detection using CNN
 
 This project uses a **Convolutional Neural Network (CNN)** to detect plant diseases from leaf images. It helps identify whether a leaf is healthy or affected by a specific disease based on visual patterns.
@@ -57,7 +56,7 @@ python scripts/print_chart.py
 
 This script reads the `history.pkl` file and generates performance plots like the one below:
 
-![Training and Validation Accuracy and Loss](./Figure.png)
+![Training and Validation Accuracy and Loss](assets/Figure.png)
 
 - **Left Chart**: Accuracy over epochs (Train vs Validation)
 - **Right Chart**: Loss over epochs (Train vs Validation)
@@ -68,9 +67,32 @@ This visualization helps understand how well the model is learning and if it's o
 
 ## 🧪 Predicting Leaf Diseases
 
-After training, you can test the model using `predict_test_images.py`.
+After training, you can test the model using either a folder of images or directly with your camera.
 
-### 📌 Steps to Predict
+### 📷 Option 1 – Predict Using the Camera
+
+You can use your webcam to take a live picture of a leaf and predict its health status.
+
+#### 📌 Steps to Predict with the Camera
+
+1. Make sure your webcam is connected and working.
+2. From the main directory, run:
+
+```bash
+python predict_with_camera.py
+```
+
+3. Place the leaf in the center of the camera frame with good lighting and a clear background.
+4. When ready, press the **`s` key** to capture the image and see the prediction.
+5. The model will display the predicted class (e.g., "Tomato___Late_blight") and the confidence percentage.
+
+📸 Example screenshot:
+
+![Camera Prediction Example](assets/Camera_prediction.png)
+
+---
+
+### 🖼️ Option 2 – Predict Using Test Images
 
 1. Place test images in the `testData/` directory.
    - You can use the sample images or add your own.
@@ -80,14 +102,15 @@ After training, you can test the model using `predict_test_images.py`.
 python predict_test_images.py
 ```
 
-The model will analyze each image and print the predicted class in the terminal.
-
-### ✅ Example Output
+The model will analyze the images and print the filename, predicted class, and confidence in a table format:
 
 ```
-testData/test_leaf2.jpg
-1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 66ms/step
-Predicted class: Strawberry___Leaf_scorch
+╒══════════════════════════════╤════════════════════════════════════════════╤══════════════╕
+│ Filename                     │ Predicted Class                            │ Confidence   │
+╞══════════════════════════════╪════════════════════════════════════════════╪══════════════╡
+│ AppleCedarRust1.JPG          │ Apple___Apple_scab                         │ 75.89%       │
+│ AppleCedarRust2.JPG          │ Apple___Cedar_apple_rust                   │ 100.00%      │
+╘══════════════════════════════╧════════════════════════════════════════════╧══════════════╛
 ```
 
 ---
@@ -96,6 +119,7 @@ Predicted class: Strawberry___Leaf_scorch
 
 ```
 plant-disease-detection/
+├── assets/                  # Folder to save images and assets
 ├── dataset/                 # Leaf image categories (already available)
 ├── models/
 │   └── model.h5             # Trained CNN model
@@ -105,17 +129,20 @@ plant-disease-detection/
 │   └── train_model.py       # Model training script
 │   └── print_chart.py       # Script to visualize training metrics
 ├── testData/                # Images for prediction
+├── .gitignore               # Files/folders to ignore in version control
+├── config.yaml              # Configuration variables
 ├── predict_test_images.py   # Script to predict diseases from test images
+├── predict_with_camera.py   # Script to predict diseases using the camera
+├── requirements.txt         # Project dependencies
 └── README.md                # This file
 ```
 
 ---
 
-## 👥 Authors
+## 👥 Author
 
 - **Samuel Buendía** – [GitHub](https://github.com/samuelbuendia) · [LinkedIn](https://www.linkedin.com/in/samuelbuendia/) · [Portfolio](https://samuelbuendia.com)
-- **Qasam Hussain** – [GitHub](https://github.com/Qasimhussain5753) · [LinkedIn](https://linkedin.com/in/qasam-hussain-53a54912b)
-- **Vaibhav Sharma**
+
 ---
 
 ## 📃 License

@@ -1,33 +1,50 @@
 import pickle
+import yaml
 import numpy as np
 from pathlib import Path
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
+from tabulate import tabulate  # pip install tabulate
+import time
 
-# Load the trained model
-model = load_model('models/model.h5')
+# Load configuration
+with open('config.yaml', 'r') as f:
+    config = yaml.safe_load(f)
 
-# Load class_indices
-with open('models/class_indices.pkl', 'rb') as f:
+# Load model and class indices
+print("Loading model and configuration...")
+model = load_model(config['paths']['model'])
+
+with open(config['paths']['class_indices'], 'rb') as f:
     class_indices = pickle.load(f)
 
-# Reverse it
 idx_to_class = {v: k for k, v in class_indices.items()}
+img_size = tuple(config['image']['size'])
 
-# Relative path to the folder
-folder_path = Path("test_data")  # Or Path("./data")
+# Folder to scan
+folder_path = Path("test_data")
+
+# Start processing
+print("Processing images...\nPlease wait while we process the info.")
+time.sleep(1)
+
+results = []
 
 for file_path in folder_path.iterdir():
-    if file_path.is_file():  # Check if it's a file
-        # Load and preprocess a single image
-        print("")
-        print(file_path)
-        img = image.load_img(file_path, target_size=(224, 224))
+    if file_path.is_file():
+        img = image.load_img(file_path, target_size=img_size)
         img_array = image.img_to_array(img)
         img_array = np.expand_dims(img_array, axis=0) / 255.0
 
-        prediction = model.predict(img_array)
-        predicted_class = np.argmax(prediction)
+        prediction = model.predict(img_array, verbose=0)[0]
+        predicted_idx = np.argmax(prediction)
+        predicted_label = idx_to_class[predicted_idx]
+        confidence = prediction[predicted_idx]
 
-        print("Predicted class:", idx_to_class[predicted_class])
+        results.append([file_path.name, predicted_label, f"{confidence:.2%}"])
 
+# Show results
+headers = ["Filename", "Predicted Class", "Confidence"]
+print(tabulate(results, headers=headers, tablefmt="fancy_grid"))
+
+print("\nDone!")

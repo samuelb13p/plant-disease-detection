@@ -1,0 +1,22 @@
+paths:
+  dataset: "./dataset"
+  model: "./models/model.h5"
+  history: "./models/history.pkl"
+  class_indices: "./models/class_indices.pkl"
+
+image:
+  size: [224, 224]
+  batch_size: 32
+  validation_split: 0.2
+
+augmentation:
+  rescale: 0.00392156862745098  # 1/255
+  rotation_range: 20
+  zoom_range: 0.2
+  horizontal_flip: true
+
+model:
+  learning_rate: 0.001
+  dense_units: 128
+  epochs: 10
+

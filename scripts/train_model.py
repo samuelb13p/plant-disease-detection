@@ -1,5 +1,6 @@
 import os
 import pickle
+import yaml
 import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -9,21 +10,27 @@ from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
 from tensorflow.keras.optimizers import Adam
 from sklearn.metrics import classification_report
 
+# Load config
+with open('config.yaml', 'r') as f:
+    config = yaml.safe_load(f)
+
 # Paths
-dataset_path = './dataset'
-model_path = './models/model.h5'
-history_path = './models/history.pkl'
-class_indices_path = './models/class_indices.pkl'
-img_size = (224, 224)
-batch_size = 32
+dataset_path = config['paths']['dataset']
+model_path = config['paths']['model']
+history_path = config['paths']['history']
+class_indices_path = config['paths']['class_indices']
+
+img_size = tuple(config['image']['size'])
+batch_size = config['image']['batch_size']
+val_split = config['image']['validation_split']
 
 # Data Preprocessing
 datagen = ImageDataGenerator(
-    rescale=1./255,
-    validation_split=0.2,
-    rotation_range=20,
-    zoom_range=0.2,
-    horizontal_flip=True
+    rescale=config['augmentation']['rescale'],
+    validation_split=val_split,
+    rotation_range=config['augmentation']['rotation_range'],
+    zoom_range=config['augmentation']['zoom_range'],
+    horizontal_flip=config['augmentation']['horizontal_flip']
 )
 
 train_data = datagen.flow_from_directory(
@@ -47,21 +54,25 @@ with open(class_indices_path, 'wb') as f:
     pickle.dump(train_data.class_indices, f)
 
 # Load Pretrained Base Model
-base_model = MobileNetV2(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
+base_model = MobileNetV2(weights='imagenet', include_top=False, input_shape=img_size + (3,))
 base_model.trainable = False
 
 # Custom classifier
 x = base_model.output
 x = GlobalAveragePooling2D()(x)
-x = Dense(128, activation='relu')(x)
+x = Dense(config['model']['dense_units'], activation='relu')(x)
 output = Dense(train_data.num_classes, activation='softmax')(x)
 
 # Full model
 model = Model(inputs=base_model.input, outputs=output)
-model.compile(optimizer=Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
+model.compile(
+    optimizer=Adam(learning_rate=config['model']['learning_rate']),
+    loss='categorical_crossentropy',
+    metrics=['accuracy']
+)
 
 # Train Model
-history = model.fit(train_data, validation_data=val_data, epochs=10)
+history = model.fit(train_data, validation_data=val_data, epochs=config['model']['epochs'])
 
 # Save model
 model.save(model_path)

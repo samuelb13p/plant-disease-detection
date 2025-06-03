@@ -1,8 +1,14 @@
 import pickle
+import yaml
 import matplotlib.pyplot as plt
 
+# Load config
+with open('config.yaml', 'r') as f:
+    config = yaml.safe_load(f)
+
 # Load the saved history
-with open('./models/history.pkl', 'rb') as f:
+history_path = config['paths']['history']
+with open(history_path, 'rb') as f:
     history_data = pickle.load(f)
 
 # Plot function
